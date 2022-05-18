@@ -10,6 +10,7 @@ $(function () {
         color: 'black'
     };
     var drawing = false;
+    
 
     $.getJSON('/token', function(tokenResponse) {
         syncClient = new Twilio.Sync.Client(tokenResponse.token, { logLevel: 'info' });
@@ -34,7 +35,7 @@ $(function () {
     function syncDrawingData(data) {
         var w = canvas.width;
         var h = canvas.height;
-        drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.color);
+        drawLine(data.x0 * w , data.y0 * h, data.x1 * w, data.y1 * h, data.color);
     }
 
     function drawLine(x0, y0, x1, y1, color, syncStream) {
