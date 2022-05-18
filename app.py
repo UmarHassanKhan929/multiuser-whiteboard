@@ -6,14 +6,17 @@ from twilio.jwt.access_token import AccessToken
 from twilio.jwt.access_token.grants import SyncGrant
 from dotenv import load_dotenv
 
+users = []
+
 app = Flask(__name__)
 fake = Faker()
+
 load_dotenv()
 
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('login.html')
 
 
 @app.route('/token')
@@ -29,6 +32,17 @@ def generate_token():
     sync_grant = SyncGrant(sync_service_sid)
     token.add_grant(sync_grant)
     return jsonify(identity=username, token=token.to_jwt())
+
+
+@app.route('/index', methods=['POST'])
+def handle_data():
+    user = request.form['user']
+    if user not in users:
+        users.append(user)
+
+    print(request.form['user'])
+    return render_template('index.html', userList=users, username=user)
+
 
 if __name__ == "__main__":
     app.run()
