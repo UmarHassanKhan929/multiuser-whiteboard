@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MultiUser Whiteboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='sytle.css') }}">
+    <!-- <link rel="stylesheet" href="./../static/sytle.css"> -->
 </head>
 
 <body>
@@ -13,19 +14,28 @@
         <p id="message">Initializing Sync...</p>
     </div>
 
-    <h1>{{username}}</h1>
+    <div class="container">
+        <div class="left">
+            <h3>{{username}}</h3>
+            <div class="buttons">
+                <button id="color-btn" class="btn">Change Color</button>
+                <button id="clear-btn" class="btn">Clear</button>
+            </div>
+            <div class="buttons">
+                <button id="request-btn" class="actButton">Request</button>
+                <button id="release-btn" class="actButton">Release</button>
+            </div>
+        </div>
 
-    <p>Current Users:</p>
-    {% for user in userList %}
-    <p>{{user}}</p>
-    {% endfor %}
-
-    <div class="buttons">
-        <button id="color-btn" class="btn">Change Color</button>
-        <button id="clear-btn" class="btn">Clear</button>
+        <div class="currUsers">
+            <h3>Current Users:</h3>
+            {% for user in userList %}
+            <p>{{user}}</p>
+            {% endfor %}
+        </div>
     </div>
 
-    <canvas class="whiteboard"></canvas>
+    <canvas style="border: 5px solid black;" class="whiteboard"></canvas>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
 

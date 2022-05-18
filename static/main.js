@@ -1,4 +1,4 @@
-$(function () {
+$(function() {
     var syncClient;
     var syncStream;
     var message = $('#message');
@@ -94,8 +94,8 @@ $(function () {
     }
 
     function changeColor() {
-        current.color = '#' + Math.floor(Math.random() * 16777215).toString(16);   //change line color
-        colorBtn.css('border', '5px solid ' + current.color);  
+        current.color = '#' + Math.floor(Math.random() * 16777215).toString(16); //change line color
+        colorBtn.css('border', '5px solid ' + current.color);
     };
 
     function clearBoard() {
@@ -111,7 +111,7 @@ $(function () {
     canvas.addEventListener('mouseup', onMouseUp);
     canvas.addEventListener('mouseout', onMouseUp);
     canvas.addEventListener('mousemove', throttle(onMouseMove, 10));
-    
+
     // mobile touch support
     canvas.addEventListener('touchstart', onMouseDown);
     canvas.addEventListener('touchend', onMouseUp);
@@ -121,6 +121,6 @@ $(function () {
     colorBtn.on('click', changeColor);
     clearBtn.on('click', clearBoard);
 
-    window.addEventListener('resize', onResize);
+    // window.addEventListener('resize', onResize);
     onResize();
 });

@@ -2,32 +2,46 @@
     box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
     padding: 0;
 }
 
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: auto;
+    width: 70%;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .whiteboard {
     height: 100%;
     width: 100%;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
 }
 
 .tips {
-    position: fixed;
+    /* position: fixed;
     left: 0;
-    top: 0;
+    top: 0; */
 }
+
 .buttons {
-    position: fixed;
+    /* position: fixed;
     right: 0;
     top: 0;
-    z-index: 1;  /* make the button on top of the whiteboard */
+    z-index: 1; */
+    /* make the button on top of the whiteboard */
+    margin-bottom: 20px;
 }
 
 .btn {
@@ -37,5 +51,21 @@ html, body {
     cursor: pointer;
     background-color: white;
     color: black;
-    border: 5px solid #555555;
+    border: 5px solid black;
+}
+
+.actButton {
+    font-size: 14px;
+    padding: 5px 10px;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: white;
+    color: black;
+}
+
+.currUsers {
+    background-color: #e6e6e6;
+    padding: 10px;
+    border-radius: 10px;
+    width: max-content
 }
