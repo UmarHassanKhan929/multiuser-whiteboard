@@ -1,5 +1,4 @@
-$(function() {
-    var syncClient;
+var syncClient;
     var syncStream;
     var message = $('#message');
     // var colorPicker =  document.getElementById("cPick").value
@@ -11,6 +10,9 @@ $(function() {
         color: 'black'
     };
     var drawing = false;
+$(function() {
+
+    loadCanvas();
 
     $.getJSON('/token', function(tokenResponse) {
         syncClient = new Twilio.Sync.Client(tokenResponse.token, { logLevel: 'info' });
@@ -18,7 +20,8 @@ $(function() {
             if (state != 'connected') {
                 message.html('Sync is not live (websocket connection <span style="color: red">' + state + '</span>)…');
             } else {
-                message.html('Sync is live!');
+                console.log(tokenResponse.identity)
+                message.html('Sync is live');
             }
         });
 
@@ -59,8 +62,24 @@ $(function() {
             y1: y1 / h,
             color: color
         });
+
+        saveCanvas();
     }
 
+    function saveCanvas() {
+        localStorage.setItem("myCanvas", canvas.toDataURL());
+    }
+
+    function loadCanvas() {
+        const dataURL = localStorage.getItem("myCanvas");
+        const img = new Image();
+      
+        img.src = dataURL;
+        img.onload = function() {
+          context.drawImage(img, 0, 0);
+        };
+      }
+    
     function onMouseDown(e) {
         drawing = true;
         current.x = e.clientX || e.touches[0].clientX;
@@ -140,4 +159,12 @@ $(function() {
 
     // window.addEventListener('resize', onResize);
     onResize();
+    
+
+    // window.addEventListener('load',doFirst,false);
+
+    // function doFirst(){
+    //     context.save();
+    //     context.restore();
+    // }
 });
