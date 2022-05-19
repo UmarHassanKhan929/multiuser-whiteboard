@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, redirect, request, jsonify, render_template
 from faker import Faker
 from twilio.jwt.access_token import AccessToken
 from twilio.jwt.access_token.grants import SyncGrant
@@ -12,11 +12,6 @@ app = Flask(__name__)
 fake = Faker()
 
 load_dotenv()
-
-
-@app.route('/')
-def index():
-    return render_template('login.html')
 
 
 @app.route('/token')
@@ -35,8 +30,13 @@ def generate_token():
     return jsonify(identity=username, token=token.to_jwt())
 
 
-@app.route('/index', methods=['POST'])
-def handle_data():
+@app.route('/')
+def index():
+    return render_template('login.html')
+
+
+@app.route('/validateLogin', methods=['POST'])
+def handle_login():
     global currUser
     user = request.form['user']
     if user in users:
@@ -44,8 +44,13 @@ def handle_data():
 
     users.append(user)
     currUser = user
-    print(request.form['user'])
-    return render_template('index.html', userList=users, username=user)
+    return redirect('/index', code=302)
+
+
+@app.route('/index')
+def handle_data():
+    global currUser
+    return render_template('index.html', userList=users, username=currUser)
 
 
 if __name__ == "__main__":
