@@ -1,5 +1,4 @@
 import os
-
 from flask import Flask, request, jsonify, render_template
 from faker import Faker
 from twilio.jwt.access_token import AccessToken
