@@ -7,6 +7,7 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
+    background-color: rebeccapurple;
 }
 
 .container {
@@ -15,6 +16,7 @@ body {
     justify-content: space-around;
     margin: auto;
     width: 70%;
+    margin-bottom: 20px;
 }
 
 .left {
@@ -27,6 +29,7 @@ body {
 .whiteboard {
     height: 100%;
     width: 100%;
+    background-color: white;
 }
 
 .tips {

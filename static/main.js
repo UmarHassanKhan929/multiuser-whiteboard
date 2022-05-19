@@ -2,6 +2,7 @@ $(function() {
     var syncClient;
     var syncStream;
     var message = $('#message');
+    // var colorPicker =  document.getElementById("cPick").value
     var colorBtn = $('#color-btn');
     var clearBtn = $('#clear-btn');
     var canvas = $('.whiteboard')[0];
@@ -10,7 +11,6 @@ $(function() {
         color: 'black'
     };
     var drawing = false;
-    
 
     $.getJSON('/token', function(tokenResponse) {
         syncClient = new Twilio.Sync.Client(tokenResponse.token, { logLevel: 'info' });
@@ -35,7 +35,7 @@ $(function() {
     function syncDrawingData(data) {
         var w = canvas.width;
         var h = canvas.height;
-        drawLine(data.x0 * w , data.y0 * h, data.x1 * w, data.y1 * h, data.color);
+        drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.color);
     }
 
     function drawLine(x0, y0, x1, y1, color, syncStream) {
@@ -94,8 +94,16 @@ $(function() {
         };
     }
 
-    function changeColor() {
-        current.color = '#' + Math.floor(Math.random() * 16777215).toString(16); //change line color
+
+    document.getElementById("cPick").onchange = function() {
+        var backRGB = this.value;
+        console.log(backRGB);
+        changeColor(backRGB)
+    }
+
+    function changeColor(color) {
+        // current.color = '#' + Math.floor(Math.random() * 16777215).toString(16); //change line color
+        current.color = color; //change line color
         colorBtn.css('border', '5px solid ' + current.color);
     };
 
@@ -107,6 +115,14 @@ $(function() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     };
+
+    function watchColorPicker(event) {
+        console.log(event.target.value)
+    }
+
+    function startup() {
+        console.log("sad")
+    }
 
     canvas.addEventListener('mousedown', onMouseDown);
     canvas.addEventListener('mouseup', onMouseUp);
