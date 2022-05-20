@@ -1,18 +1,26 @@
 var syncClient;
-    var syncStream;
-    var message = $('#message');
-    // var colorPicker =  document.getElementById("cPick").value
-    var colorBtn = $('#color-btn');
-    var clearBtn = $('#clear-btn');
-    var canvas = $('.whiteboard')[0];
-    var context = canvas.getContext('2d');
-    var current = {
-        color: 'black'
-    };
-    var drawing = false;
+var syncStream;
+var message = $('#message');
+
+var colorBtn = $('#color-btn');
+var clearBtn = $('#clear-btn');
+
+var requestBtn = $('#request-btn');
+var releaseBtn = $('#release-btn');
+var accessBtn = $('#access-btn');
+
+var canvas = $('.whiteboard')[0];
+var context = canvas.getContext('2d');
+var current = {
+    color: 'black'
+};
+var drawing = false;
 $(function() {
 
     loadCanvas();
+
+    var identity = ""
+    var users = {}
 
     $.getJSON('/token', function(tokenResponse) {
         syncClient = new Twilio.Sync.Client(tokenResponse.token, { logLevel: 'info' });
@@ -20,7 +28,9 @@ $(function() {
             if (state != 'connected') {
                 message.html('Sync is not live (websocket connection <span style="color: red">' + state + '</span>)…');
             } else {
-                console.log(tokenResponse.identity)
+                identity = tokenResponse.identity
+                users = tokenResponse.userList
+                console.log(identity)
                 message.html('Sync is live');
             }
         });
@@ -73,14 +83,22 @@ $(function() {
     function loadCanvas() {
         const dataURL = localStorage.getItem("myCanvas");
         const img = new Image();
-      
+
         img.src = dataURL;
         img.onload = function() {
-          context.drawImage(img, 0, 0);
+            context.drawImage(img, 0, 0);
         };
-      }
-    
+    }
+
     function onMouseDown(e) {
+
+        console.log(users)
+
+        if (!users[identity]) {
+            alert("You cannot draw. You dont have access")
+            return
+        }
+
         drawing = true;
         current.x = e.clientX || e.touches[0].clientX;
         current.y = e.clientY || e.touches[0].clientY;
@@ -116,7 +134,6 @@ $(function() {
 
     document.getElementById("cPick").onchange = function() {
         var backRGB = this.value;
-        console.log(backRGB);
         changeColor(backRGB)
     }
 
@@ -127,7 +144,15 @@ $(function() {
     };
 
     function clearBoard() {
+
+        if (!users[identity]) {
+            alert("You dont have access")
+            return
+        }
+
         context.clearRect(0, 0, canvas.width, canvas.height);
+        localStorage.removeItem('myCanvas')
+        saveCanvas();
     };
 
     function onResize() {
@@ -135,12 +160,48 @@ $(function() {
         canvas.height = window.innerHeight;
     };
 
-    function watchColorPicker(event) {
-        console.log(event.target.value)
+    function handleRequest() {
+        var dict = { 'id': identity };
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1:5000/token/request", //localhost Flask
+            data: JSON.stringify(dict),
+            contentType: "application/json",
+        });
+
+        $.getJSON('/token/request/list', function(response) {
+            users = response.users
+        })
     }
 
-    function startup() {
-        console.log("sad")
+
+    function handleRelease() {
+        var dict = { 'id': identity };
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1:5000/token/release", //localhost Flask
+            data: JSON.stringify(dict),
+            contentType: "application/json",
+        });
+
+        $.getJSON('/token/request/list', function(response) {
+            users = response.users
+        })
+
+        alert("Control has been released")
+    }
+
+    function handleAccess() {
+        $.getJSON('/token/request/list', function(response) {
+            users = response.users
+        })
+
+        if (users[identity]) {
+            alert("You have access")
+        } else {
+            alert("You dont have access")
+        }
+
     }
 
     canvas.addEventListener('mousedown', onMouseDown);
@@ -157,9 +218,13 @@ $(function() {
     colorBtn.on('click', changeColor);
     clearBtn.on('click', clearBoard);
 
+    requestBtn.on('click', handleRequest);
+    releaseBtn.on('click', handleRelease);
+    accessBtn.on('click', handleAccess);
+
     // window.addEventListener('resize', onResize);
     onResize();
-    
+
 
     // window.addEventListener('load',doFirst,false);
 

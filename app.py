@@ -5,7 +5,9 @@ from twilio.jwt.access_token import AccessToken
 from twilio.jwt.access_token.grants import SyncGrant
 from dotenv import load_dotenv
 
-users = []
+users = {}
+userQueue = []
+leader = None
 currUser = ''
 
 app = Flask(__name__)
@@ -27,7 +29,47 @@ def generate_token():
 
     sync_grant = SyncGrant(sync_service_sid)
     token.add_grant(sync_grant)
-    return jsonify(identity=username, token=token.to_jwt())
+    return jsonify(identity=username, token=token.to_jwt(), userList=users, userQueue=userQueue)
+
+
+@app.route('/token/request', methods=['GET', 'POST'])
+def handleRequest():
+    global leader
+    global users
+
+    req = request.get_json()['id']
+    if leader is None:
+        leader = req
+        users[req] = True
+    else:
+        userQueue.append(req)
+
+    return jsonify(userQueue=userQueue, users=users)
+
+
+@app.route('/token/release', methods=['GET', 'POST'])
+def handleRelease():
+    global leader
+    global users
+    req = request.get_json()['id']
+
+    if len(userQueue) > 0:
+        newLeader = userQueue.pop(0)
+        users[newLeader] = True
+        leader = newLeader
+    else:
+        leader = None
+    users[req] = False
+
+    return jsonify(userQueue=userQueue, users=users)
+
+
+# Get list of users in queue
+
+
+@app.route('/token/request/list')
+def handleRequestList():
+    return jsonify(userQueue=userQueue, users=users)
 
 
 @app.route('/')
@@ -39,10 +81,10 @@ def index():
 def handle_login():
     global currUser
     user = request.form['user']
-    if user in users:
+    if user in users.keys():
         return render_template('login.html', error="Username already exists")
 
-    users.append(user)
+    users[user] = False
     currUser = user
     return redirect('/index', code=302)
 
