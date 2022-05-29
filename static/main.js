@@ -1,9 +1,11 @@
 var syncClient;
 var syncStream;
 var message = $('#message');
+var username = document.getElementById("username")
 
 var colorBtn = $('#color-btn');
 var clearBtn = $('#clear-btn');
+var logoutBtn = $('#logout');
 
 var requestBtn = $('#request-btn');
 var releaseBtn = $('#release-btn');
@@ -15,6 +17,8 @@ var current = {
     color: 'black'
 };
 var drawing = false;
+
+
 $(function() {
 
     loadCanvas();
@@ -28,7 +32,19 @@ $(function() {
             if (state != 'connected') {
                 message.html('Sync is not live (websocket connection <span style="color: red">' + state + '</span>)…');
             } else {
-                identity = tokenResponse.identity
+
+                if (!localStorage.getItem("identity")) {
+                    console.log("here0")
+                    localStorage.setItem("identity", tokenResponse.identity);
+                } else if (localStorage.getItem("identity") != tokenResponse.identity) {
+                    identity = localStorage.getItem("identity")
+                    console.log("here1: " + identity)
+                } else {
+                    identity = tokenResponse.identity
+                    console.log("here2: " + identity)
+                }
+
+                username.innerHTML = "Logged in as: " + localStorage.getItem('identity')
                 users = tokenResponse.userList
                 console.log(identity)
                 message.html('Sync is live');
@@ -164,7 +180,7 @@ $(function() {
         var dict = { 'id': identity };
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:5000/token/request", //localhost Flask
+            url: "/token/request", //localhost Flask
             data: JSON.stringify(dict),
             contentType: "application/json",
         });
@@ -179,7 +195,7 @@ $(function() {
         var dict = { 'id': identity };
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:5000/token/release", //localhost Flask
+            url: "/token/release", //localhost Flask
             data: JSON.stringify(dict),
             contentType: "application/json",
         });
@@ -192,6 +208,7 @@ $(function() {
     }
 
     function handleAccess() {
+        console.log(identity)
         $.getJSON('/token/request/list', function(response) {
             users = response.users
         })
@@ -221,15 +238,32 @@ $(function() {
     requestBtn.on('click', handleRequest);
     releaseBtn.on('click', handleRelease);
     accessBtn.on('click', handleAccess);
+    logoutBtn.on('click', handleLogout);
 
-    // window.addEventListener('resize', onResize);
     onResize();
 
 
-    // window.addEventListener('load',doFirst,false);
+    window.onbeforeunload = function() {
+        saveCanvas()
+    }
 
-    // function doFirst(){
-    //     context.save();
-    //     context.restore();
-    // }
+    function handleLogout() {
+        removeUser(localStorage.getItem('identity'))
+        localStorage.removeItem('identity')
+    }
+
+    function removeUser(user) {
+        var dict = { 'id': user };
+
+        console.log(dict)
+        $.ajax({
+            type: "POST",
+            url: "/token/delete", //localhost Flask
+            data: JSON.stringify(dict),
+            contentType: "application/json",
+        });
+
+        window.location.replace("/");
+
+    }
 });

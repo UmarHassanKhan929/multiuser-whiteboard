@@ -1,5 +1,5 @@
 import os
-from flask import Flask, redirect, request, jsonify, render_template
+from flask import Flask, redirect, request, jsonify, render_template, url_for
 from faker import Faker
 from twilio.jwt.access_token import AccessToken
 from twilio.jwt.access_token.grants import SyncGrant
@@ -93,6 +93,27 @@ def handle_login():
 def handle_data():
     global currUser
     return render_template('index.html', userList=users, username=currUser)
+
+
+@app.route('/token/delete', methods=['GET', 'POST'])
+def delete_user():
+    global leader
+    global users
+    req = request.get_json()['id']
+
+    if len(userQueue) > 0:
+        newLeader = userQueue.pop(0)
+        users[newLeader] = True
+        leader = newLeader
+    else:
+        leader = None
+
+    del users[req]
+    print(req)
+    print(users)
+
+    return redirect(url_for('index'))
+    # return render_template('login.html')
 
 
 if __name__ == "__main__":

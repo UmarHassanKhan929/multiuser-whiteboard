@@ -7,7 +7,7 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: rebeccapurple;
+    background-color: rgb(154, 75, 233);
 }
 
 .container {
@@ -17,6 +17,7 @@ body {
     margin: auto;
     width: 70%;
     margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 .left {
@@ -26,10 +27,30 @@ body {
     align-items: center;
 }
 
+#logout {
+    height: max-content;
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 10px 20px;
+    border: 1px solid white;
+    cursor: pointer;
+}
+
+#logout:hover {
+    background-color: rgb(175, 2, 2);
+}
+
 .whiteboard {
     height: 100%;
     width: 100%;
     background-color: white;
+}
+
+.username {
+    color: white;
+    font-size: 20px;
 }
 
 .tips {
@@ -45,16 +66,21 @@ body {
     z-index: 1; */
     /* make the button on top of the whiteboard */
     margin-bottom: 20px;
+    display: flex;
+    align-items: center;
 }
 
 .btn {
     font-size: 14px;
-    padding: 5px 10px;
+    padding: 10px;
     text-decoration: none;
     cursor: pointer;
     background-color: white;
     color: black;
     border: 5px solid black;
+    border: none;
+    border-radius: 5px;
+    margin-left: 20px;
 }
 
 .actButton {
@@ -64,6 +90,18 @@ body {
     cursor: pointer;
     background-color: white;
     color: black;
+    border: none;
+    margin: 5px;
+    border-radius: 10px;
+    transition: 0.2s;
+}
+
+.actButton:hover {
+    background-color: rgb(230, 230, 230);
+}
+
+.actButton:focus {
+    background-color: aqua;
 }
 
 .currUsers {

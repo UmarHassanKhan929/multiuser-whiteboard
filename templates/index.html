@@ -5,18 +5,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MultiUser Whiteboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='sytle.css') }}">
-    <!-- <link rel="stylesheet" href="./../static/sytle.css"> -->
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='sytle.css') }}"> -->
+    <link rel="stylesheet" href="../static/sytle.css">
 </head>
 
 <body>
-    <div class="tips">
-        <p id="message">Initializing Sync...</p>
-    </div>
+
 
     <div class="container">
+
+        <button id="logout">Logout</button>
         <div class="left">
-            <h3>{{username}}</h3>
+            <div class="tips">
+                <p id="message">Initializing Sync...</p>
+            </div>
+
+            <h3 class="username" id="username">Logged in as: </h3>
             <div class="buttons">
                 <input type="color" name="colorPick" id="cPick">
                 <button id="clear-btn" class="btn">Clear Board</button>
