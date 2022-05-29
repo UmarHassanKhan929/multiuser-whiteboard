@@ -34,14 +34,11 @@ $(function() {
             } else {
 
                 if (!localStorage.getItem("identity")) {
-                    console.log("here0")
                     localStorage.setItem("identity", tokenResponse.identity);
                 } else if (localStorage.getItem("identity") != tokenResponse.identity) {
                     identity = localStorage.getItem("identity")
-                    console.log("here1: " + identity)
                 } else {
                     identity = tokenResponse.identity
-                    console.log("here2: " + identity)
                 }
 
                 username.innerHTML = "Logged in as: " + localStorage.getItem('identity')

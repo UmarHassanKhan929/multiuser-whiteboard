@@ -99,7 +99,11 @@ def handle_data():
 def delete_user():
     global leader
     global users
+    global userQueue
     req = request.get_json()['id']
+
+    if req in userQueue:
+        userQueue.remove(req)
 
     if len(userQueue) > 0:
         newLeader = userQueue.pop(0)
@@ -109,8 +113,6 @@ def delete_user():
         leader = None
 
     del users[req]
-    print(req)
-    print(users)
 
     return redirect(url_for('index'))
     # return render_template('login.html')
