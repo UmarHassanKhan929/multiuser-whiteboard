@@ -1,6 +1,5 @@
 import os
 from flask import Flask, redirect, request, jsonify, render_template, url_for
-from faker import Faker
 from twilio.jwt.access_token import AccessToken
 from twilio.jwt.access_token.grants import SyncGrant
 from dotenv import load_dotenv
@@ -11,7 +10,6 @@ leader = None
 currUser = ''
 
 app = Flask(__name__)
-fake = Faker()
 
 load_dotenv()
 

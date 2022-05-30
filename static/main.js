@@ -174,7 +174,7 @@ $(function() {
         canvas.height = window.innerHeight;
     };
 
-    function handleRequest() {
+    async function handleRequest() {
         var dict = { 'id': identity };
         $.ajax({
             type: "POST",
@@ -187,6 +187,7 @@ $(function() {
             users = response.users
             console.log(users)
         })
+
     }
 
 
