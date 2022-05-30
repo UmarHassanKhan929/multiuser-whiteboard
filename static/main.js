@@ -35,6 +35,7 @@ $(function() {
 
                 if (!localStorage.getItem("identity")) {
                     localStorage.setItem("identity", tokenResponse.identity);
+                    identity = tokenResponse.identity
                 } else if (localStorage.getItem("identity") != tokenResponse.identity) {
                     identity = localStorage.getItem("identity")
                 } else {
@@ -184,6 +185,7 @@ $(function() {
 
         $.getJSON('/token/request/list', function(response) {
             users = response.users
+            console.log(users)
         })
     }
 
