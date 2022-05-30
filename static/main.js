@@ -266,4 +266,13 @@ $(function() {
         window.location.replace("/");
 
     }
+
+
+    setInterval(function() {
+        console.log(identity);
+        $.getJSON("/token/request/list", function(response) {
+            users = response.users;
+        });
+    }, 3000);
+
 });

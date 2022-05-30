@@ -71,12 +71,12 @@ body {
 }
 
 .btn {
-    font-size: 14px;
+    /* font-size: 14px;
     padding: 10px;
     text-decoration: none;
     cursor: pointer;
-    background-color: white;
-    color: black;
+    /* background-color: white; */
+    color: white;
     border: 5px solid black;
     border: none;
     border-radius: 5px;

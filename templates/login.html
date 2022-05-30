@@ -6,19 +6,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="./../static/logincss.css">
 </head>
 
 <body>
     <div class="pageContainer">
-        <h1 class="title">Welcome to Multi-User Whiteboard</h1>
-        <div class="container">
-            <form action="/validateLogin" method="post">
-                <input class="input" type="text" name="user" placeholder="Enter Username">
-                <input class="submit" type="submit">
-            </form>
+        <div class="left">
+            <h1 class="title">Welcome to Multi-User Whiteboard</h1>
         </div>
-        <p class="error">{{error}}</p>
+
+        <div class="right">
+
+            <div class="container">
+                <form action="/validateLogin" method="post">
+                    <input class="input" type="text" name="user" placeholder="Enter Username">
+                    <input class="btn btn-primary" type="submit">
+                </form>
+            </div>
+            <p class="error">{{error}}</p>
+
+            <div class="names">
+                <h4>Made By:</h4>
+                <h5>Syed Mohammad Mazin</h5>
+                <h5>Muhammad Shariq</h5>
+                <h5>Umar Hassan Khan</h5>
+            </div>
+        </div>
     </div>
 
 </body>
