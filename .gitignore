@@ -1,3 +1,32 @@
+# Environment variables
 .env
 
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project-specific
 project-details.docx
+
+# Screenshots (optional, uncomment if you don't want to commit them)
+# screenshots/
